@@ -1,0 +1,89 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+<div class="manage-projects">
+    <h2>Manage Projects</h2>
+    
+    <!-- Projects List -->
+    <div class="projects-list">
+        <h3>Existing Projects</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Skills</th>
+                    <th>Image</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for project in projects %}
+                <tr>
+                    <td>{{ project.title }}</td>
+                    <td>{{ project.skills }}</td>
+                    <td>
+                        {% if project.image %}
+                        <img src="{{ url_for('static', filename='uploads/' + project.image) }}" 
+                             alt="{{ project.title }}" width="100">
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ url_for('edit_project', id=project.id) }}" 
+                           class="btn btn-primary btn-sm">Edit</a>
+                        <a href="{{ url_for('delete_project', id=project.id) }}" 
+                           class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Add Project Form -->
+    <div class="add-project">
+        <h3>{{ 'Edit Project' if project else 'Add New Project' }}</h3>
+        <form method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label>Project Title</label>
+                <input type="text" name="title" value="{{ project.title if project }}" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Description</label>
+                <textarea name="description" required>{{ project.description if project }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Skills (comma separated)</label>
+                <input type="text" name="skills" value="{{ project.skills if project }}" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Project Image</label>
+                <input type="file" name="image" {% if not project %}required{% endif %}>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">
+                {{ 'Update' if project else 'Add' }} Project
+            </button>
+        </form>
+    </div>
+</div>
+
+{% for project in projects %}
+<div class="project-item">
+    <img src="{{ url_for('static', filename='uploads/' + project.image) }}" 
+         alt="{{ project.title }}" width="100">
+    <div class="project-meta">
+        <h4>{{ project.title }}</h4>
+        <p>{{ project.description }}</p>
+        <div class="project-skills">
+            {% for skill in project.skills.split(',') %}
+            <span class="skill-tag">{{ skill }}</span>
+            {% endfor %}
+        </div>
+    </div>
+    {% include 'admin/components/action_buttons.html' with context %}
+</div>
+{% endfor %}
+{% endblock %} 

@@ -1,0 +1,50 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+<div class="admin-dashboard">
+    <h1>Manage Certificates</h1>
+    
+    <form method="POST" enctype="multipart/form-data" class="admin-form">
+        <div class="form-group">
+            <label>Certificate Title</label>
+            <input type="text" name="title" required>
+        </div>
+        <div class="form-group">
+            <label>Issuing Organization</label>
+            <input type="text" name="organization" required>
+        </div>
+        <div class="form-group">
+            <label>Date Issued</label>
+            <input type="date" name="date_issued" required>
+        </div>
+        <div class="form-group">
+            <label>Certificate Image</label>
+            <input type="file" name="image" accept="image/*" required>
+        </div>
+        <div class="form-group">
+            <label>Credential ID (optional)</label>
+            <input type="text" name="credential_id">
+        </div>
+        <div class="form-group">
+            <label>Verification URL (optional)</label>
+            <input type="url" name="credential_url">
+        </div>
+        <button type="submit" class="btn">Add Certificate</button>
+    </form>
+
+    <div class="certificate-list">
+        {% for cert in certificates %}
+        <div class="certificate-item">
+            <img src="{{ url_for('static', filename='uploads/' + cert.image) }}" 
+                 alt="{{ cert.title }}" width="100">
+            <div class="certificate-info">
+                <h4>{{ cert.title }}</h4>
+                <p>{{ cert.organization }}</p>
+                <small>{{ cert.date_issued }}</small>
+            </div>
+            {% include 'admin/components/action_buttons.html' with context %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %} 

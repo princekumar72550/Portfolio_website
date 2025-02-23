@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="about-section">
+    {% if admin.profile_pic %}
+    <img src="{{ url_for('static', filename='uploads/' + admin.profile_pic) }}" 
+         alt="Profile Picture" class="profile-pic">
+    {% endif %}
+    
+    <h1>About Me</h1>
+    
+    {% if admin.bio %}
+    <div class="bio">
+        {{ admin.bio|safe }}
+    </div>
+    {% endif %}
+</div>
+{% endblock %} 

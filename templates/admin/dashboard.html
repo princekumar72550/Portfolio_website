@@ -1,0 +1,119 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+<div class="dashboard">
+    <div class="dashboard-header">
+        <h1>Welcome back, {{ current_user.username }}</h1>
+        <p class="text-muted">Last login: 2 hours ago</p>
+    </div>
+
+    <div class="quick-stats">
+        <div class="stat-card">
+            <i class="fas fa-box-open"></i>
+            <div class="stat-content">
+                <h3>{{ projects_count }}</h3>
+                <p>Total Projects</p>
+                <div class="stat-trend up">
+                    <i class="fas fa-arrow-up"></i> 12%
+                </div>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <i class="fas fa-award"></i>
+            <div class="stat-content">
+                <h3>{{ certificates_count }}</h3>
+                <p>Certificates</p>
+                <div class="stat-trend down">
+                    <i class="fas fa-arrow-down"></i> 5%
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-grid">
+        <div class="recent-projects">
+            <h2><i class="fas fa-clock"></i> Recent Projects</h2>
+            {% for project in recent_projects %}
+            <div class="project-item">
+                <img src="{{ url_for('static', filename='uploads/' + project.image) }}">
+                <div class="project-info">
+                    <h4>{{ project.title }}</h4>
+                    <div class="project-meta">
+                        <span class="badge">{{ project.created_at|datetimeformat }}</span>
+                        <div class="actions">
+                            <a href="#" class="btn-icon"><i class="fas fa-edit"></i></a>
+                            <a href="#" class="btn-icon danger"><i class="fas fa-trash"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="analytics-chart">
+            <h2><i class="fas fa-chart-bar"></i> Traffic Analytics</h2>
+            <div class="chart-container">
+                <canvas id="trafficChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('trafficChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {{ chart_labels|tojson }},
+            datasets: [{
+                label: 'Visitors',
+                data: {{ chart_data.visitors|tojson }},
+                borderColor: 'rgba(var(--primary-color-rgb), 1)',
+                backgroundColor: 'rgba(var(--primary-color-rgb), 0.2)',
+                tension: 0.4,
+                fill: true
+            },
+            {
+                label: 'Page Views',
+                data: {{ chart_data.pageviews|tojson }},
+                borderColor: '#4caf50',
+                backgroundColor: 'rgba(76, 175, 80, 0.2)',
+                tension: 0.4,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        color: 'var(--text-color)'
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        color: 'rgba(var(--border-color), 0.1)'
+                    },
+                    ticks: {
+                        color: 'var(--text-color)'
+                    }
+                },
+                y: {
+                    grid: {
+                        color: 'rgba(var(--border-color), 0.1)'
+                    },
+                    ticks: {
+                        color: 'var(--text-color)'
+                    }
+                }
+            }
+        }
+    });
+});
+</script>
+{% endblock %} 

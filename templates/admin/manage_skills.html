@@ -1,0 +1,54 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+<div class="manage-skills">
+    <h2>Manage Skills</h2>
+    
+    <!-- Add Skill Form -->
+    <div class="admin-form">
+        <h3>Add New Skill</h3>
+        <form method="POST">
+            <div class="form-group">
+                <label>Skill Name</label>
+                <input type="text" name="name" required>
+            </div>
+            <div class="form-group">
+                <label>Proficiency (1-100)</label>
+                <input type="number" name="proficiency" min="1" max="100" required>
+            </div>
+            <div class="form-group">
+                <label>Category</label>
+                <input type="text" name="category" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Skill</button>
+        </form>
+    </div>
+
+    <!-- Skills List -->
+    <div class="skills-list">
+        <h3>Existing Skills</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Skill</th>
+                    <th>Proficiency</th>
+                    <th>Category</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for skill in skills %}
+                <div class="skill-item">
+                    <div class="skill-info">
+                        <h4>{{ skill.name }}</h4>
+                        <p>Proficiency: {{ skill.proficiency }}%</p>
+                        <p>Category: {{ skill.category }}</p>
+                    </div>
+                    {% include 'admin/components/action_buttons.html' with context %}
+                </div>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %} 

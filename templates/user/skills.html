@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="skills-page">
+    <h1>Technical Skills</h1>
+    
+    <div class="skills-grid">
+        {% for skill in skills %}
+        <div class="skill-item">
+            <div class="skill-header">
+                <h3>{{ skill.name }}</h3>
+                <span class="skill-percentage">{{ skill.proficiency }}%</span>
+            </div>
+            <div class="skill-progress">
+                <div class="progress-bar" style="width: {{ skill.proficiency }}%;"></div>
+            </div>
+            <p class="skill-category">{{ skill.category }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,23 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+<div class="admin-form">
+    <h2>Edit Skill</h2>
+    <form method="POST">
+        <div class="form-group">
+            <label>Skill Name</label>
+            <input type="text" name="name" value="{{ skill.name }}" required>
+        </div>
+        <div class="form-group">
+            <label>Proficiency (1-100)</label>
+            <input type="number" name="proficiency" 
+                   min="1" max="100" value="{{ skill.proficiency }}" required>
+        </div>
+        <div class="form-group">
+            <label>Category</label>
+            <input type="text" name="category" value="{{ skill.category }}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Skill</button>
+    </form>
+</div>
+{% endblock %} 

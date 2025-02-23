@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero-section">
+    {% if admin.profile_pic %}
+    <img src="{{ url_for('static', filename='uploads/' + admin.profile_pic) }}" 
+         alt="Profile Picture" class="profile-pic">
+    {% endif %}
+    
+    <div class="welcome-message">
+        <h1>{{ admin.home_title }}</h1>
+        <p class="tagline">{{ admin.home_subtitle }}</p>
+        
+        {% if admin.resume %}
+        <a href="{{ url_for('download_resume') }}" class="btn btn-download">
+            <i class="fas fa-download"></i> Download Resume
+        </a>
+        {% endif %}
+    </div>
+</section>
+
+{# Removed featured projects section #}
+{% endblock %} 
